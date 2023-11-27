@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout code with SSH key
         uses: actions/checkout@v2
-         with:
-         ssh-private-key: ${{secrets.EC2_SSH_PRIVATE_KEY}}
-
-      - name: Set up SSH keys
-        uses: webfactory/ssh-agent@v0.5.2
         with:
-         ssh-private-key: ${{secrets.EC2_SSH_PRIVATE_KEY}}
+          ssh-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+      # - name: Set up SSH keys (Commented out for now)
+      #   uses: webfactory/ssh-agent@v0.5.2
+      #   with:
+      #     ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
       - name: Deploy to EC2
         run: |
-          ssh -i ${{secrets.EC2_SSH_PRIVATE_KEY}} ec2-user@ec2-3-80-141-18.compute-1.amazonaws.com 'bash /home/ec2-user/deploy.sh'
+          ssh -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@ec2-3-80-141-18.compute-1.amazonaws.com 'bash /home/ec2-user/deploy.sh'
