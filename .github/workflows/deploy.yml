@@ -11,11 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name:  Install SSH Key
-        uses:  shimataro/ssh-key-action@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH keys
+        uses: webfactory/ssh-agent@v0.5.2
         with:
-         ssh-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-    
+          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
       - name: Deploy to EC2
         run: |
           ssh -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@ec2-3-80-141-18.compute-1.amazonaws.com 'bash /home/ec2-user/deploy.sh'
